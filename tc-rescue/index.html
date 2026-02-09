@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="TC Rescue" />
+  <meta name="theme-color" content="#000000" />
+  
+  <title>TC Rescue – Audio Start Timecode Calculator</title>
+  
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+    
+    :root { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --safe-area-top: env(safe-area-inset-top);
+      --safe-area-bottom: env(safe-area-inset-bottom);
+      --primary: #007AFF;
+      --bg: #F2F2F7;
+      --card-bg: #FFFFFF;
+      --border: #C6C6C8;
+      --text: #000000;
+      --text-secondary: #3C3C43;
+      --success: #34C759;
+    }
+    
+    body { 
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      padding-top: max(20px, var(--safe-area-top));
+      padding-bottom: max(20px, var(--safe-area-bottom));
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    
+    h1 { 
+      margin: 0 0 4px;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .subtitle { 
+      margin: 0 0 24px;
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.4;
+    }
+    
+    .card { 
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 12px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .input-group {
+      margin-bottom: 16px;
+    }
+    
+    .input-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    label { 
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin: 0 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    
+    input, select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 17px;
+      background: var(--card-bg);
+      color: var(--text);
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%233C3C43' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    
+    .hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    
+    button:active {
+      opacity: 0.7;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: var(--border);
+      color: var(--text);
+    }
+    
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    
+    .btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .btn-group-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+    
+    .formula {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-family: 'SF Mono', Monaco, monospace;
+      padding: 8px;
+      background: var(--bg);
+      border-radius: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    
+    .result-item {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 8px 0;
+      border: 1px solid var(--border);
+    }
+    
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .take-name {
+      font-weight: 600;
+      font-size: 17px;
+      color: var(--text);
+    }
+    
+    .result-grid {
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+    }
+    
+    .result-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 8px;
+    }
+    
+    .result-label {
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+    
+    .result-value {
+      font-family: 'SF Mono', Monaco, monospace;
+      font-weight: 500;
+      color: var(--text);
+    }
+    
+    .timecode-highlight {
+      background: #E8F5E9;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 8px 0;
+      border: 2px solid var(--success);
+    }
+    
+    .timecode-value {
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--success);
+      letter-spacing: 1px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+    
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+    
+    .mono {
+      font-family: 'SF Mono', Monaco, monospace;
+    }
+    
+    @media (max-width: 400px) {
+      h1 { font-size: 24px; }
+      .input-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TC Rescue</h1>
+    <p class="subtitle">Calculate the correct Audio Start Timecode for DaVinci Resolve by entering the clap position in your WAV file and the timecode shown on video.</p>
+
+    <div class="card">
+      <div class="input-group">
+        <label>Project Frame Rate</label>
+        <select id="fpsSelect">
+          <option value="23.976">23.976 fps</option>
+          <option value="24">24.000 fps</option>
+          <option value="25">25.000 fps</option>
+          <option value="29.97">29.970 fps</option>
+          <option value="30">30.000 fps</option>
+          <option value="59.94">59.940 fps</option>
+          <option value="60">60.000 fps</option>
+        </select>
+        <div class="hint">Timecode base auto-adjusts (23.976→24, 29.97→30)</div>
+      </div>
+
+      <div class="input-group">
+        <label>Take Name (Optional)</label>
+        <input id="takeName" type="text" placeholder="A010_C012" />
+      </div>
+
+      <div class="input-group">
+        <label>Audio Clap Position (Min:Sec:Frames)</label>
+        <div class="input-row">
+          <div>
+            <input id="aMin" type="number" min="0" value="0" placeholder="Min" inputmode="numeric" />
+          </div>
+          <div>
+            <input id="aSec" type="number" min="0" value="0" placeholder="Sec" inputmode="numeric" />
+          </div>
+          <div>
+            <input id="aFrames" type="number" min="0" value="0" placeholder="Fr" inputmode="numeric" />
+          </div>
+        </div>
+        <div class="hint">Position of the clap in your audio file</div>
+      </div>
+
+      <div class="input-group">
+        <label>Video Clap Timecode</label>
+        <input id="vTC" type="text" placeholder="02:30:05:00" class="mono" />
+        <div class="hint">Format: HH:MM:SS:FF (timecode shown on video at clap)</div>
+      </div>
+
+      <button class="btn-primary" id="addBtn">Calculate Audio Start TC</button>
+      
+      <div class="divider"></div>
+      
+      <div class="formula">
+        A_clap = (min×60 + sec) × fps + frames<br>
+        A_start = V_clap - A_clap
+      </div>
+    </div>
+
+    <div id="results">
+      <!-- Results will be inserted here -->
+    </div>
+
+    <div id="actions" style="display: none;" class="card">
+      <div class="btn-group-3">
+        <button class="btn-secondary" id="copyAllBtn">Copy All</button>
+        <button class="btn-secondary" id="exportCsvBtn">Export CSV</button>
+        <button class="btn-secondary" id="clearBtn">Clear</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Service Worker Registration
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+
+  const fpsToTcBase = (fpsActual) => {
+    if (Math.abs(fpsActual - 23.976) < 0.01) return 24;
+    if (Math.abs(fpsActual - 29.97) < 0.02) return 30;
+    if (Math.abs(fpsActual - 59.94) < 0.02) return 60;
+    return Math.round(fpsActual);
+  };
+
+  const pad2 = (n) => String(n).padStart(2, '0');
+
+  const parseTC = (tcStr) => {
+    const m = tcStr.trim().match(/^(\d{1,2}):(\d{2}):(\d{2})(?::(\d{2}))?$/);
+    if (!m) return null;
+    return {
+      hh: Number(m[1]),
+      mm: Number(m[2]),
+      ss: Number(m[3]),
+      ff: Number(m[4] ?? 0),
+    };
+  };
+
+  const tcToFrames = (tc, tcBase) => {
+    return ((tc.hh * 3600 + tc.mm * 60 + tc.ss) * tcBase + tc.ff);
+  };
+
+  const framesToTC = (framesFloat, tcBase) => {
+    let frames = Math.round(framesFloat);
+    if (frames < 0) frames = 0;
+
+    const totalSeconds = Math.floor(frames / tcBase);
+    const ff = frames % tcBase;
+
+    const hh = Math.floor(totalSeconds / 3600);
+    const mm = Math.floor((totalSeconds % 3600) / 60);
+    const ss = totalSeconds % 60;
+
+    return `${pad2(hh)}:${pad2(mm)}:${pad2(ss)}:${pad2(ff)}`;
+  };
+
+  const fmt = (n, digits=3) => {
+    if (Number.isNaN(n)) return '';
+    return Number(n).toFixed(digits);
+  };
+
+  const state = {
+    rows: []
+  };
+
+  const render = () => {
+    const container = document.getElementById('results');
+    const actions = document.getElementById('actions');
+    
+    if (state.rows.length === 0) {
+      container.innerHTML = `
+        <div class="card">
+          <div class="empty-state">
+            <div class="empty-icon">🎬</div>
+            <p>No calculations yet</p>
+            <p style="font-size: 14px;">Enter your clap positions above to get started</p>
+          </div>
+        </div>
+      `;
+      actions.style.display = 'none';
+      return;
+    }
+
+    actions.style.display = 'block';
+    
+    container.innerHTML = state.rows.map((r, i) => `
+      <div class="result-item">
+        <div class="result-header">
+          <div class="take-name">${r.take}</div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-success copy-btn" data-idx="${i}" style="padding: 6px 12px; width: auto; font-size: 14px;">Copy</button>
+            <button class="btn-secondary del-btn" data-idx="${i}" style="padding: 6px 12px; width: auto; font-size: 14px;">Delete</button>
+          </div>
+        </div>
+        
+        <div class="timecode-highlight">
+          <div class="result-label">AUDIO START TIMECODE</div>
+          <div class="timecode-value">${r.audioStartTC}</div>
+          <div class="hint" style="margin-top: 4px;">Set this in Resolve → Clip Attributes → Timecode → Start</div>
+        </div>
+        
+        <div class="result-grid">
+          <div class="result-row">
+            <div class="result-label">FPS</div>
+            <div class="result-value">${r.fpsActual} (base ${r.tcBase})</div>
+          </div>
+          <div class="result-row">
+            <div class="result-label">Audio Clap</div>
+            <div class="result-value">${pad2(r.aMin)}:${pad2(r.aSec)}:${pad2(r.aFrames)}</div>
+          </div>
+          <div class="result-row">
+            <div class="result-label">Video Clap TC</div>
+            <div class="result-value">${r.vTC}</div>
+          </div>
+          <div class="result-row">
+            <div class="result-label">Offset</div>
+            <div class="result-value">${fmt(r.offsetFrames, 1)} fr (${fmt(r.offsetSeconds, 2)} s)</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    // Attach event listeners
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const idx = Number(e.currentTarget.dataset.idx);
+        const r = state.rows[idx];
+        await navigator.clipboard.writeText(r.audioStartTC);
+        e.currentTarget.textContent = "✓ Copied";
+        setTimeout(() => e.currentTarget.textContent = "Copy", 1500);
+      });
+    });
+
+    document.querySelectorAll('.del-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = Number(e.currentTarget.dataset.idx);
+        state.rows.splice(idx, 1);
+        render();
+      });
+    });
+  };
+
+  const addRow = () => {
+    const fpsActual = Number(document.getElementById('fpsSelect').value);
+    const tcBase = fpsToTcBase(fpsActual);
+
+    const take = (document.getElementById('takeName').value || `Take ${state.rows.length + 1}`).trim();
+    const aMin = Number(document.getElementById('aMin').value || 0);
+    const aSec = Number(document.getElementById('aSec').value || 0);
+    const aFrames = Number(document.getElementById('aFrames').value || 0);
+
+    const vTCStr = (document.getElementById('vTC').value || '').trim();
+    const tc = parseTC(vTCStr);
+    if (!tc) {
+      alert('Please enter Video Clap Timecode in format HH:MM:SS:FF\nExample: 02:30:05:00');
+      return;
+    }
+    const vTCNorm = `${pad2(tc.hh)}:${pad2(tc.mm)}:${pad2(tc.ss)}:${pad2(tc.ff)}`;
+
+    const audioClapTotalFrames = ((aMin * 60 + aSec) * fpsActual) + aFrames;
+    const videoClapFrames = tcToFrames(tc, tcBase);
+    const audioStartFrames = videoClapFrames - audioClapTotalFrames;
+    const audioStartTC = framesToTC(audioStartFrames, tcBase);
+
+    const offsetFrames = audioStartFrames;
+    const offsetSeconds = offsetFrames / fpsActual;
+
+    state.rows.push({
+      take,
+      fpsActual: fpsActual.toFixed(3),
+      tcBase,
+      aMin, aSec, aFrames,
+      vTC: vTCNorm,
+      audioClapTotalFrames,
+      videoClapFrames,
+      audioStartFrames,
+      audioStartTC,
+      offsetFrames,
+      offsetSeconds
+    });
+
+    render();
+    
+    // Scroll to results
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+
+  document.getElementById('addBtn').addEventListener('click', addRow);
+
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    if (confirm('Clear all calculations?')) {
+      state.rows = [];
+      render();
+    }
+  });
+
+  document.getElementById('copyAllBtn').addEventListener('click', async () => {
+    const lines = state.rows.map(r => `${r.take}\t${r.audioStartTC}`).join('\n');
+    await navigator.clipboard.writeText(lines);
+    
+    const btn = document.getElementById('copyAllBtn');
+    btn.textContent = '✓ Copied All';
+    setTimeout(() => btn.textContent = 'Copy All', 1500);
+  });
+
+  document.getElementById('exportCsvBtn').addEventListener('click', () => {
+    const header = [
+      "Take","FPS_Actual","TC_Base","AudioClap_Min","AudioClap_Sec","AudioClap_Frames",
+      "VideoClap_TC","AudioClap_TotalFrames","AudioStart_TC","AudioStart_Frames","Offset_Seconds"
+    ].join(',');
+
+    const rows = state.rows.map(r => ([
+      r.take, r.fpsActual, r.tcBase, r.aMin, r.aSec, r.aFrames,
+      r.vTC, r.audioClapTotalFrames, r.audioStartTC, r.audioStartFrames, r.offsetSeconds
+    ].join(',')));
+
+    const csv = [header, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tc_rescue_export.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  render();
+</script>
+</body>
+</html>
