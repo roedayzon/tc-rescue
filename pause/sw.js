@@ -1,4 +1,4 @@
-const CACHE = 'pause-v1';
+const CACHE = 'pause-v2';
 const ASSETS = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.json'];
 
 self.addEventListener('install', e => {

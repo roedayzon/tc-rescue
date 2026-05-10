@@ -140,6 +140,59 @@ button.attention {
   transition: width 0.1s linear;
 }
 
+.method-card {
+  text-align: left;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 100%;
+}
+.method-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+.method-sub { font-size: 14px; color: var(--muted); line-height: 1.4; }
+
+.check-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 6px 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.check-row input[type="checkbox"] {
+  width: 22px; height: 22px;
+  flex-shrink: 0;
+  margin: 2px 0 0;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+.task-title { font-weight: 600; font-size: 16px; }
+.optional-tag {
+  display: inline-block;
+  margin-left: 6px;
+  background: var(--surface-2); color: var(--muted);
+  padding: 1px 8px; border-radius: 999px;
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+.steps {
+  margin: 4px 0 0 34px;
+  padding: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.steps li { margin: 4px 0; }
+.task {
+  background: var(--surface);
+  border: 1px solid var(--surface-2);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.step-header { margin-bottom: 4px; display: flex; flex-direction: column; gap: 8px; }
+.step-header h2 { margin: 0; font-size: 26px; }
+
 .log { list-style: none; padding: 0; margin: 0; }
 .log li {
   padding: 10px 0; border-bottom: 1px solid var(--surface-2);
