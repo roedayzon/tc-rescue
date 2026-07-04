@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Help Rebuild My Car After the Fire</title>
+<meta name="description" content="After losing my car in a fire, I'm raising funds to get it repaired and back on the road. Every donation helps." />
+
+<!-- Social share preview (shows an image/title when the link is shared) -->
+<meta property="og:title" content="Help Rebuild My Car After the Fire" />
+<meta property="og:description" content="I lost my car in a fire. Help me raise $9,000 to get it fixed and back on the road." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="photos/1.jpg" />
+
+<style>
+  /* =========================================================
+     THEME — tweak colors here if you like
+     ========================================================= */
+  :root {
+    --bg: #0f1720;
+    --card: #17212b;
+    --card-2: #1d2a36;
+    --text: #eef3f8;
+    --muted: #9fb0bf;
+    --accent: #ff6b3d;      /* warm orange — donate / progress */
+    --accent-2: #ffb03d;
+    --good: #35c46b;
+    --line: #2a3a48;
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --maxw: 880px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -10%, #1b2836 0%, var(--bg) 55%) fixed;
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: var(--accent-2); }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 18px; }
+
+  /* ---------- Hero ---------- */
+  header.hero {
+    padding: 42px 0 10px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 13px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    background: rgba(255,176,61,.12);
+    border: 1px solid rgba(255,176,61,.3);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: clamp(28px, 6vw, 44px);
+    line-height: 1.15;
+    margin: 0 0 12px;
+  }
+  .subtitle { color: var(--muted); font-size: 18px; max-width: 620px; margin: 0 auto; }
+
+  /* ---------- Hero photo ---------- */
+  .hero-photo {
+    margin: 26px 0 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #22303d, #17212b);
+    position: relative;
+  }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-placeholder {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--muted); text-align: center; gap: 8px; padding: 20px;
+  }
+  .photo-placeholder .pic { font-size: 40px; }
+
+  /* ---------- Progress card ---------- */
+  .raise-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
+    margin: 24px 0;
+    box-shadow: var(--shadow);
+  }
+  .raise-top { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+  .raised-amt { font-size: 30px; font-weight: 800; }
+  .goal-amt { color: var(--muted); font-size: 16px; }
+  .bar {
+    height: 14px; background: var(--card-2); border-radius: 999px;
+    overflow: hidden; margin: 14px 0 10px; border: 1px solid var(--line);
+  }
+  .bar > span {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    width: 0%; border-radius: 999px; transition: width 1s ease;
+  }
+  .raise-meta { display: flex; justify-content: space-between; color: var(--muted); font-size: 14px; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 17px;
+    border: none; border-radius: 12px; padding: 15px 26px; cursor: pointer;
+    text-decoration: none; width: 100%; margin-top: 16px;
+    transition: transform .12s ease, filter .12s ease;
+    box-shadow: 0 8px 20px rgba(255,107,61,.35);
+  }
+  .btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .btn.secondary {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--line); box-shadow: none; font-size: 15px;
+  }
+
+  /* ---------- Sections ---------- */
+  section { margin: 40px 0; }
+  h2 { font-size: 24px; margin: 0 0 14px; }
+  .story p { color: #d6e0ea; }
+  .story .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px;
+  }
+
+  /* ---------- Video ---------- */
+  .video-frame {
+    position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius);
+    overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow);
+    background: #000;
+  }
+  .video-frame iframe, .video-frame video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video-placeholder {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px; color: var(--muted);
+    background: linear-gradient(135deg, #22303d, #17212b); text-align: center; padding: 20px;
+  }
+  .video-placeholder .play { font-size: 46px; }
+
+  /* ---------- Photo gallery ---------- */
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .gallery .cell {
+    aspect-ratio: 1; border-radius: 14px; overflow: hidden; border: 1px solid var(--line);
+    background: linear-gradient(135deg, #22303d, #17212b); position: relative;
+  }
+  .gallery .cell img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ---------- Updates timeline ---------- */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 8px; top: 6px; bottom: 6px;
+    width: 2px; background: var(--line);
+  }
+  .update {
+    position: relative; margin-bottom: 22px;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 16px 18px;
+  }
+  .update::before {
+    content: ""; position: absolute; left: -24px; top: 20px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); border: 3px solid var(--bg);
+  }
+  .update .date { color: var(--accent-2); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
+  .update h3 { margin: 4px 0 6px; font-size: 18px; }
+  .update p { margin: 0; color: #d6e0ea; }
+  .update img { margin-top: 12px; border-radius: 10px; border: 1px solid var(--line); }
+  .no-updates { color: var(--muted); font-style: italic; }
+
+  /* ---------- Share ---------- */
+  .share-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .share-row .btn { width: auto; flex: 1 1 160px; }
+
+  /* ---------- Sticky donate bar (mobile) ---------- */
+  .sticky-donate {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    background: rgba(15,23,32,.92); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line); padding: 10px 14px;
+    display: none; align-items: center; gap: 12px;
+  }
+  .sticky-donate .mini { font-size: 13px; color: var(--muted); flex: 1; }
+  .sticky-donate .mini b { color: var(--text); }
+  .sticky-donate .btn { width: auto; margin: 0; padding: 12px 20px; }
+  @media (max-width: 720px) { .sticky-donate { display: flex; } body { padding-bottom: 74px; } }
+
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 30px 0 40px; border-top: 1px solid var(--line); margin-top: 40px; }
+  .toast {
+    position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%) translateY(20px);
+    background: var(--good); color: #04210f; font-weight: 700; padding: 12px 20px;
+    border-radius: 10px; opacity: 0; pointer-events: none; transition: all .3s ease; z-index: 100;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <span class="badge" id="badge">🔥 Fire recovery fundraiser</span>
+    <h1 id="title">Help Me Rebuild My Car After the Fire</h1>
+    <p class="subtitle" id="subtitle">
+      I recently lost my car in a fire. I'm raising money to get it repaired and back on the road —
+      and I'll keep everyone who donates updated every step of the way.
+    </p>
+
+    <div class="hero-photo">
+      <img id="heroImg" alt="My car" src="photos/1.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+      <div class="photo-placeholder">
+        <div class="pic">📷</div>
+        <div>Add your main photo as <b>photos/1.jpg</b></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ PROGRESS + DONATE ============ -->
+  <div class="raise-card" id="donate">
+    <div class="raise-top">
+      <div class="raised-amt">$<span id="raised">0</span></div>
+      <div class="goal-amt">raised of $<span id="goal">9,000</span> goal</div>
+    </div>
+    <div class="bar"><span id="barFill"></span></div>
+    <div class="raise-meta">
+      <span id="pct">0% funded</span>
+      <span id="donorCount">Be the first to donate</span>
+    </div>
+    <a class="btn" id="donateBtn" href="#" target="_blank" rel="noopener">💛 Donate now</a>
+    <button class="btn secondary" onclick="shareCampaign()">🔗 Share this fundraiser</button>
+  </div>
+
+  <!-- ============ MY STORY ============ -->
+  <section class="story">
+    <h2>My Story</h2>
+    <div class="card">
+      <p id="story1">
+        A few days ago, a fire destroyed my car. It was more than just a vehicle to me — it's how I
+        get to work, run errands, and stay independent. Losing it happened in an instant, and replacing
+        or repairing it is far beyond what I can cover on my own right now.
+      </p>
+      <p id="story2">
+        That's why I'm asking for help. Every dollar goes directly toward the repairs needed to make the
+        car safe and drivable again. I've set a goal of <b>$9,000</b> to cover the estimated repair costs.
+        Whether you can give a little or a lot, or simply share this page, it means the world to me. Thank you. 🙏
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ VIDEO TESTIMONY ============ -->
+  <section>
+    <h2>My Video Message</h2>
+    <div class="video-frame" id="videoFrame">
+      <div class="video-placeholder">
+        <div class="play">▶️</div>
+        <div>Paste your YouTube or Vimeo link in the CONFIG below to show your video here.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHOTO GALLERY ============ -->
+  <section>
+    <h2>Photos</h2>
+    <div class="gallery" id="gallery"><!-- filled by script --></div>
+  </section>
+
+  <!-- ============ UPDATES ============ -->
+  <section>
+    <h2>Repair Progress &amp; Updates</h2>
+    <div class="timeline" id="timeline"><!-- filled by script --></div>
+  </section>
+
+  <!-- ============ SHARE ============ -->
+  <section>
+    <h2>Help by Sharing</h2>
+    <div class="card">
+      <p style="margin-top:0;color:var(--muted)">Not able to donate right now? Sharing this page helps just as much.</p>
+      <div class="share-row">
+        <button class="btn" onclick="shareCampaign()">🔗 Share</button>
+        <button class="btn secondary" onclick="copyLink()">📋 Copy link</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Thank you for your kindness and support. ❤️</p>
+    <p style="opacity:.6">This page was created by the car owner. Donations are processed securely by the linked payment provider.</p>
+  </footer>
+</div>
+
+<!-- ============ STICKY DONATE (mobile) ============ -->
+<div class="sticky-donate">
+  <div class="mini">Raised <b>$<span id="raisedMini">0</span></b> of $<span id="goalMini">9,000</span></div>
+  <a class="btn" id="donateBtnMini" href="#" target="_blank" rel="noopener">Donate</a>
+</div>
+
+<div class="toast" id="toast">Link copied!</div>
+
+<script>
+/* =============================================================
+   ▼▼▼  CONFIG — EDIT THIS SECTION. This is all you need to change. ▼▼▼
+   ============================================================= */
+const CONFIG = {
+
+  // --- Campaign basics ---
+  title:     "Help Me Rebuild My Car After the Fire",
+  subtitle:  "I recently lost my car in a fire. I'm raising money to get it repaired and back on the road — and I'll keep everyone who donates updated every step of the way.",
+  goal:      9000,     // your fundraising goal in dollars
+  raised:    0,        // UPDATE THIS as money comes in (see note below)
+  donorCount: 0,       // optional: how many people have donated
+
+  // --- Your donate link (PayPal.me or Stripe Payment Link) ---
+  // Examples:
+  //   PayPal:  "https://www.paypal.com/paypalme/yourname/25"
+  //   Stripe:  "https://buy.stripe.com/xxxxxxxxxxxx"
+  donateUrl: "PASTE_YOUR_PAYPAL_OR_STRIPE_LINK_HERE",
+
+  // --- Your video testimony (paste the normal YouTube or Vimeo link) ---
+  // Examples:
+  //   "https://www.youtube.com/watch?v=abc123"
+  //   "https://youtu.be/abc123"
+  //   "https://vimeo.com/123456789"
+  videoUrl: "",   // leave "" to show a placeholder
+
+  // --- Photos (put image files in the photos/ folder) ---
+  // The gallery shows every file listed here. Add or remove freely.
+  photos: [
+    "photos/1.jpg",
+    "photos/2.jpg",
+    "photos/3.jpg",
+    "photos/4.jpg"
+  ],
+
+  // --- Story paragraphs (edit the text; add more if you want) ---
+  story: [
+    "A few days ago, a fire destroyed my car. It was more than just a vehicle to me — it's how I get to work, run errands, and stay independent. Losing it happened in an instant, and repairing it is far beyond what I can cover on my own right now.",
+    "That's why I'm asking for help. Every dollar goes directly toward the repairs needed to make the car safe and drivable again. I've set a goal of $9,000 to cover the estimated repair costs. Whether you can give a little or a lot, or simply share this page, it means the world to me. Thank you. 🙏"
+  ],
+
+  // --- Progress updates (newest first). Add a new one each time something happens. ---
+  // "photo" is optional — point it at a file in photos/ or leave it out.
+  updates: [
+    {
+      date: "Day 1",
+      title: "Fundraiser launched",
+      body: "Thank you for being here. I just started this fundraiser and will post updates here as the repair moves forward — from the shop's estimate to the day I drive it home.",
+      photo: ""
+    }
+    // ,{ date: "Week 2", title: "Got the estimate", body: "The shop quoted...", photo: "photos/estimate.jpg" }
+  ]
+};
+/* =============================================================
+   ▲▲▲  END OF CONFIG — you don't need to edit below this line.  ▲▲▲
+   ============================================================= */
+
+
+/* ---------- Render the page from CONFIG ---------- */
+function money(n){ return n.toLocaleString("en-US"); }
+
+function toEmbedUrl(url){
+  if(!url) return null;
+  try {
+    // YouTube: watch?v=ID  or  youtu.be/ID
+    let m = url.match(/[?&]v=([\w-]{6,})/) || url.match(/youtu\.be\/([\w-]{6,})/) || url.match(/youtube\.com\/embed\/([\w-]{6,})/);
+    if(m) return "https://www.youtube.com/embed/" + m[1];
+    // Vimeo: vimeo.com/NUMBER
+    m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if(m) return "https://player.vimeo.com/video/" + m[1];
+    // If they already pasted an embed URL, just use it
+    if(/youtube\.com\/embed|player\.vimeo\.com/.test(url)) return url;
+  } catch(e){}
+  return null;
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  // Text
+  document.title = CONFIG.title;
+  document.getElementById("title").textContent = CONFIG.title;
+  document.getElementById("subtitle").textContent = CONFIG.subtitle;
+
+  // Story
+  const storyCard = document.querySelector(".story .card");
+  storyCard.innerHTML = "";
+  CONFIG.story.forEach(function(p){
+    const el = document.createElement("p"); el.innerHTML = p; storyCard.appendChild(el);
+  });
+
+  // Progress numbers
+  const pct = CONFIG.goal > 0 ? Math.min(100, Math.round(CONFIG.raised / CONFIG.goal * 100)) : 0;
+  document.getElementById("raised").textContent = money(CONFIG.raised);
+  document.getElementById("goal").textContent   = money(CONFIG.goal);
+  document.getElementById("raisedMini").textContent = money(CONFIG.raised);
+  document.getElementById("goalMini").textContent   = money(CONFIG.goal);
+  document.getElementById("pct").textContent = pct + "% funded";
+  setTimeout(function(){ document.getElementById("barFill").style.width = pct + "%"; }, 200);
+
+  const dc = document.getElementById("donorCount");
+  if(CONFIG.donorCount > 0){
+    dc.textContent = CONFIG.donorCount + (CONFIG.donorCount === 1 ? " donor" : " donors");
+  }
+
+  // Donate buttons
+  const dUrl = CONFIG.donateUrl && !CONFIG.donateUrl.startsWith("PASTE_") ? CONFIG.donateUrl : null;
+  ["donateBtn","donateBtnMini"].forEach(function(id){
+    const b = document.getElementById(id);
+    if(dUrl){ b.href = dUrl; }
+    else { b.href = "#"; b.title = "Add your PayPal/Stripe link in CONFIG"; b.addEventListener("click", function(e){ e.preventDefault(); alert("Add your PayPal or Stripe donate link in the CONFIG section of index.html to activate this button."); }); }
+  });
+
+  // Video
+  const embed = toEmbedUrl(CONFIG.videoUrl);
+  if(embed){
+    const f = document.getElementById("videoFrame");
+    f.innerHTML = '<iframe src="'+embed+'" title="Video message" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  }
+
+  // Gallery
+  const g = document.getElementById("gallery");
+  g.innerHTML = "";
+  (CONFIG.photos || []).forEach(function(src, i){
+    const cell = document.createElement("div"); cell.className = "cell";
+    const img = document.createElement("img");
+    img.src = src; img.alt = "Photo " + (i+1); img.loading = "lazy";
+    img.onerror = function(){
+      cell.innerHTML = '<div class="photo-placeholder"><div class="pic">📷</div><div style="font-size:12px">'+src+'</div></div>';
+    };
+    cell.appendChild(img); g.appendChild(cell);
+  });
+
+  // Updates
+  const t = document.getElementById("timeline");
+  t.innerHTML = "";
+  if(!CONFIG.updates || CONFIG.updates.length === 0){
+    t.innerHTML = '<p class="no-updates">No updates yet — check back soon.</p>';
+  } else {
+    CONFIG.updates.forEach(function(u){
+      const d = document.createElement("div"); d.className = "update";
+      let html = '<div class="date">'+ (u.date||"") +'</div><h3>'+ (u.title||"") +'</h3><p>'+ (u.body||"") +'</p>';
+      if(u.photo){ html += '<img src="'+u.photo+'" alt="Update photo" loading="lazy" onerror="this.remove()">'; }
+      d.innerHTML = html; t.appendChild(d);
+    });
+  }
+});
+
+/* ---------- Share helpers ---------- */
+function shareCampaign(){
+  const data = { title: CONFIG.title, text: "Please help me fix my car after the fire:", url: location.href };
+  if(navigator.share){ navigator.share(data).catch(function(){}); }
+  else { copyLink(); }
+}
+function copyLink(){
+  const url = location.href;
+  if(navigator.clipboard){ navigator.clipboard.writeText(url).then(showToast); }
+  else {
+    const ta = document.createElement("textarea"); ta.value = url; document.body.appendChild(ta);
+    ta.select(); try{ document.execCommand("copy"); showToast(); }catch(e){} ta.remove();
+  }
+}
+function showToast(){
+  const el = document.getElementById("toast");
+  el.classList.add("show"); setTimeout(function(){ el.classList.remove("show"); }, 1800);
+}
+</script>
+</body>
+</html>
